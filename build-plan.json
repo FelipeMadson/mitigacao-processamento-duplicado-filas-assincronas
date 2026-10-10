@@ -1,0 +1,84 @@
+{
+  "plan": {
+    "slug": "mitigacao-processamento-duplicado-filas-assincronas",
+    "kind": "python-library",
+    "architecture": "middleware-idempotente-com-lease-transacional-e-registry-de-chaves",
+    "visual": {
+      "audience": "engenheiros de confiabilidade e backend",
+      "primaryTask": "desduplicar mensagens em filas assíncronas",
+      "compositions": [
+        "registro de chaves idempotentes com lease de tempo",
+        "validação de estado antes da execução de trabalho"
+      ],
+      "selectionReason": "solução atômica com controle de lease e transação de estado",
+      "screens": [
+        "registro de chaves idempotentes com lease de tempo",
+        "validação de estado antes da execução de trabalho"
+      ]
+    },
+    "features": [
+      {
+        "name": "registro-de-chaves-idempotentes",
+        "acceptance": [
+          "chave única por operação",
+          "registro transacional com lease de tempo",
+          "validação de estado antes da execução"
+        ],
+        "files": [
+          "idempotency_registry.py",
+          "idempotency_lock.py",
+          "idempotency_validator.py"
+        ]
+      },
+      {
+        "name": "validacao-de-estado-antes-da-execucao",
+        "acceptance": [
+          "verificação de estado antes da execução",
+          "retorno de cache se já processado",
+          "registro de status de execução"
+        ],
+        "files": [
+          "state_validator.py",
+          "state_cache.py",
+          "state_logger.py"
+        ]
+      },
+      {
+        "name": "lease-de-tempo-com-heartbeat",
+        "acceptance": [
+          "lease de tempo para evitar reprocessamento",
+          "heartbeat para manter lease ativo",
+          "limpeza de registros expirados"
+        ],
+        "files": [
+          "lease_manager.py",
+          "lease_heartbeat.py",
+          "lease_cleaner.py"
+        ]
+      },
+      {
+        "name": "registro-transacional-de-chaves",
+        "acceptance": [
+          "registro transacional de chaves idempotentes",
+          "suporte a múltiplas filas",
+          "persistência em banco de dados relacional"
+        ],
+        "files": [
+          "idempotency_transaction.py",
+          "idempotency_repository.py",
+          "idempotency_serializer.py"
+        ]
+      }
+    ],
+    "limitations": [
+      "overhead de armazenamento de chaves idempotentes em Redis/SQLite",
+      "limitação de escalabilidade em ambientes com alta carga de mensagens",
+      "dependência de banco de dados relacional para persistência transacional",
+      "necessidade de sincronização entre filas e registros de estado"
+    ]
+  },
+  "approvedCriteria": [
+    "Testes de carga com mensagens concorrentes duplicadas garantem execução única.",
+    "Tentativas de reprocessamento após conclusão retornam resultado em cache sem re-executar."
+  ]
+}
