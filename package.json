@@ -1,0 +1,20 @@
+{
+  "name": "@felipemadson/idempotent-queue-guard-platform",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "test": "npm test --prefix frontend"
+  },
+  "keywords": [
+    "angular",
+    "fastapi",
+    "postgresql",
+    "idempotency",
+    "message-queue",
+    "deduplication"
+  ],
+  "author": "Felipe Madison (@FelipeMadson)",
+  "license": "MIT"
+}

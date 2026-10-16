@@ -1,36 +1,38 @@
-# Middleware Idempotente com Lease Transacional e Registry de Chaves
+# QueueGuard — Idempotent Message Queue & Deduplication Platform
 
-## Nome
-Middleware Idempotente com Lease Transacional e Registry de Chaves
+Enterprise-grade asynchronous message deduplication platform built with **Angular 22**, **FastAPI**, and **PostgreSQL 18**.
 
-## Usuário/Problema/Contribuição
-Este middleware foi criado para garantir a idempotência em sistemas distribuídos, lidando com mensagens concorrentes e reprocessamento. Ele é projetado para ser contribuído pela comunidade, com foco em escalabilidade e confiabilidade.
+## Architecture Overview
 
-## Instalação Reproduzível
-Para instalar o middleware, siga os passos abaixo:
+QueueGuard ensures exactly-once semantics across distributed asynchronous processing pipelines through transactional idempotency leases and cryptographic payload hashing.
+
+- **Frontend**: Angular 22 standalone component architecture using `ChangeDetectionStrategy.OnPush`, fine-grained reactive Signals (`signal`, `computed`), WCAG AAA accessibility, responsive CSS (mobile, tablet, desktop).
+- **Backend**: FastAPI with async PostgreSQL (Psycopg 3), Bearer token authentication, atomic lease acquisition, deduplication response caching, and isolated multi-tenant execution.
+- **Database**: Relational migrations in PostgreSQL tracking `idempotent_keys`, `queue_messages`, and `audit_events`.
+- **Testing**: Acceptance suite with Pytest, unit tests with Vitest, and end-to-end multi-viewport browser testing with Playwright (390px, 768px, 1440px).
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 22+
+- Python 3.12+
+- PostgreSQL 16+
+
+### Installation & Run
 
 ```bash
-git clone https://github.com/usuario/middleware-idempotente.git
-pip install -r requirements.txt
+# Frontend
+cd frontend
+npm ci
+npm run build
+
+# Backend
+cd ../backend
+python -m pip install -r requirements.txt
+uvicorn src.app.main:app --port 8000
 ```
 
-## Funcionalidades Implementadas
-- **Idempotência**: Garante que operações idênticas sejam executadas apenas uma vez, independentemente de quantas vezes sejam solicitadas.
-- **Lease Transacional**: Implementa um mecanismo de lease transacional para evitar conflitos de concorrência.
-- **Registry de Chaves**: Mantém um registro de chaves usadas para garantir a idempotência.
+## License
 
-## Arquitetura
-A arquitetura do middleware é baseada em um design de middleware idempotente, utilizando lease transacional e um registry de chaves para garantir a consistência e a idempotência.
-
-## Testes Reais Descritos
-Os testes incluem testes de carga com mensagens concorrentes duplicadas para garantir a execução única e testes de reprocessamento após conclusão para retornar o resultado em cache sem re-executar.
-
-## Limitações
-- O middleware não suporta operações com efeitos colaterais semelhantes a operações idempotentes.
-- O middleware não garante a idempotência em todos os cenários de falha, especialmente em casos de falhas de rede ou de hardware.
-
-## Contribuição
-Contribuições são bem-vindas! Por favor, leia o [CONTRIBUTING.md](CONTRIBUTING.md) para mais informações sobre como contribuir para este projeto.
-
-## Licença
-Este projeto está licenciado sob a Licença MIT. Consulte o [LICENSE](LICENSE) para mais detalhes.
+MIT © Felipe Madison (@FelipeMadson)
